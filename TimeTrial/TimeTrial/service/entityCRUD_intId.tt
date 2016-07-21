@@ -1,0 +1,103 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<#
+
+string[] typeNames =  {
+	
+};
+
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Net;
+
+using ServiceStack;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+using ServiceStack.Common.Web;
+
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
+using MongoDB.Driver.Linq;
+
+namespace TimeTrialResults
+{
+
+<#
+
+foreach(string t in typeNames){
+	#>
+
+    public class <#= t #>CRUD
+    {
+
+		public const string DefaultTableName = "<#= t #>";
+
+        public string TableName { get; set; }
+
+        public <#= t #>CRUD() { this.TableName = DefaultTableName; }
+
+        public <#= t #>CRUD(string TableName) { this.TableName = TableName; }
+
+        public IList<<#= t #>> g()
+        {
+            var rtn = new List<<#= t #>>();
+
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
+            rtn = collection.AsQueryable<<#= t #>>().ToList();
+
+            return rtn;
+        }
+        public <#= t #> g(int id)
+        {
+            <#= t #> rtn = null;
+
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
+            rtn = collection.AsQueryable<<#= t #>>().Where(o => o.Id == id).FirstOrDefault();
+
+            return rtn;
+        }
+
+        public void cr(<#= t #> item)
+        {
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
+            collection.Insert(item);
+        }
+
+        public void u(string id, <#= t #> item)
+        {
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
+            collection.Save(item);
+        }
+        public void d(int id)
+        {
+
+            var q = Query<<#= t #>>.EQ(o => o.Id, id);
+
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
+            collection.Remove(q);
+        }
+
+        public void dAll()
+        {
+            DB.GetDatabase().GetCollection<<#= t #>>(TableName).RemoveAll();
+        }
+
+    }
+
+<#
+}
+
+#>
+
+}

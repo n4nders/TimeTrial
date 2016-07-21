@@ -1,0 +1,126 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<#
+
+string[] typeNames =  {
+
+};
+
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Net;
+
+using ServiceStack;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+using ServiceStack.Common.Web;
+
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
+using MongoDB.Driver.Linq;
+
+namespace TimeTrialResults
+{
+
+<#
+
+foreach(string t in typeNames){
+	#>
+	
+#if !DEBUG
+    [Authenticate]
+#endif
+
+	public class <#= t #>Service : Service
+	{
+        // Request Definitions
+
+        [Route("/<#= t #>s")]
+        public class Get<#= t #>s : IReturn<List<<#= t #>>> { }
+
+        [Route("/<#= t #>s/{id}")]
+        public class Get<#= t #> : IReturn<<#= t #>>
+        {
+            public string Id { get; set; }
+        }
+/*
+        [Route("/<#= t #>s", "PUT")]
+        public class Create<#= t #>
+        {
+            public <#= t #> item { get; set; }
+        }
+
+        [Route("/<#= t #>s/{id}", "PATCH")]
+        public class Update<#= t #>
+        {
+            public string Id { get; set; }
+            public <#= t #> item { get; set; }
+        }
+
+        [Route("/<#= t #>s/{id}", "DELETE")]
+        public class Delete<#= t #>
+        {
+            public string Id { get; set; }
+        }
+*/
+        // methods to service requests, conforming to servicestack convention
+
+        public object Any(Get<#= t #>s request)
+        {
+            //... return summary of all interests 
+            return new <#= t #>CRUD().g();
+        }
+
+        public object Any(Get<#= t #> request)
+        {
+            //... return specific interest 
+            return new <#= t #>CRUD().g(request.Id);
+        }
+/*
+        public object Any(Create<#= t #> request)
+        {
+            //... create the interest here
+            new <#= t #>CRUD().cr(request.item);
+            return new HttpResult { StatusCode = HttpStatusCode.Created };
+        }
+
+        public object Any(Update<#= t #> request)
+        {
+            //... update the interest here
+            new <#= t #>CRUD().u(request.Id, request.item);
+            return new HttpResult { StatusCode = HttpStatusCode.Accepted };
+        }
+
+        // need to provide 2 equivalent post handlers for some reason.
+        public object Post(Update<#= t #> request)
+        {
+            // return above method ^^^
+            return Any(request);
+        }
+
+        public object Any(Delete<#= t #> request)
+        {
+            //... delete the interest here
+            new <#= t #>CRUD().d(request.Id);
+            return new HttpResult { StatusCode = HttpStatusCode.Accepted };
+        }
+*/
+	}
+
+<#
+}
+
+#>
+
+}

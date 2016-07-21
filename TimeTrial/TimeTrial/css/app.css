@@ -1,0 +1,35 @@
+﻿
+
+body {
+    padding-top: 70px;
+}
+
+@media(max-width: 768px){
+    body{
+        padding-top: 125px;
+    }
+}
+
+.lowProLink, .lowProLink:hover
+{
+    /* a link that doesn't look different to normal text */
+    color: inherit;
+    text-decoration: none;
+}
+
+@media print
+{
+    .linkColumn{
+        display: none;
+    }
+}
+
+.sidebar-outer {
+    position: relative;
+}
+
+@media (min-width: 1000px) {
+    .sidebar {
+        position: fixed;
+    }
+}

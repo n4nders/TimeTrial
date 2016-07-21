@@ -1,0 +1,42 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#/"><i class="fa fa-home"></i> TimeTrialResults</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container" ng-controller="loginController">
+
+    <div ng-show="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+
+    <div ng-show="!loggedIn && !loginAttemptPending" class="row">
+        <div class="col-md-6">
+            <h1>login</h1>
+
+            <div class="form-group">
+                <label>username</label>
+                <input class="form-control" type="text" ng-model="uname" ng-keypress="uName_onKeyPress($event)" autofocus />
+            </div>
+
+            <div class="form-group">
+                <label>password</label>
+                <input class="form-control" type="password" ng-model="pwd" ng-keypress="pwd_onKeyPress($event)" />
+            </div>
+
+            <button class="btn btn-primary" ng-click="OnLoginClick()" ng-disabled="loginPending">
+                <i class="fa fa-sign-in"></i>
+                login
+            </button>
+
+            <span class="pull-right" ng-show="loginPending">
+                <i class="fa fa-spinner fa-spin"></i>
+                please wait...
+            </span>
+
+        </div>
+    </div>
+
+</div>

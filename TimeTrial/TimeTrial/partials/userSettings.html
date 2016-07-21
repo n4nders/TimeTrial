@@ -1,0 +1,94 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#/"><i class="fa fa-home"></i> TimeTrialResults</a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li s7-search-box ng-controller="searchboxController"></li>
+            <li s7-user-links class="dropdown"></li>
+        </ul>
+
+    </div>
+</nav>
+
+<div class="container" ng-controller="userSettingsController">
+
+    <div ng-show="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+
+    <h1>
+        user settings
+    </h1>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>change password</h3>
+
+                    <div class="form-group">
+                        <label>current password</label>
+                        <input class="form-control" type="password" ng-model="oldPwd" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>new password</label>
+                        <input class="form-control" type="password" ng-model="newPwd" ng-keypress="newPwd_onKeyPress($event)" />
+                    </div>
+
+                    <div class="btn btn-default" ng-click="OnBtnChangePasswordClick()">
+                        change password
+                    </div>
+
+                    <span class="pull-right" ng-show="pwChangePending">
+                        <i class="fa fa-spinner fa-spin"></i>
+                        please wait...
+                    </span>
+
+                    <span class="alert alert-success pull-right" role="alert" ng-show="pwChangeOk">password changed <i class="fa fa-check fa-2x"></i></span>
+
+                    <span class="alert alert-danger pull-right" role="alert" ng-show="pwChangeErrorMessage">{{ pwChangeErrorMessage }} <i class="fa fa-times fa-2x"></i></span>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>choose theme</h3>
+
+                    <ul class="list-group" ng-controller="userDataController">
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');">Default</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/cerulean/bootstrap.min.css');">Cerulean</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/cosmo/bootstrap.min.css');">Cosmo</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/cyborg/bootstrap.min.css');">Cyborg</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/darkly/bootstrap.min.css');">Darkly</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/flatly/bootstrap.min.css');">Flatly</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/journal/bootstrap.min.css');">Journal</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/lumen/bootstrap.min.css');">Lumen</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/paper/bootstrap.min.css');">Paper</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css');">Readable</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css');">Sandstone</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css');">Simplex</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css');">Slate</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/spacelab/bootstrap.min.css');">Spacelab</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/superhero/bootstrap.min.css');">Superhero</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/united/bootstrap.min.css');">United</li>
+                        <li class="list-group-item" ng-click="setStyleUrl('//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css');">Yeti</li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
