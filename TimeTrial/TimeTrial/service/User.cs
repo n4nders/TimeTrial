@@ -12,10 +12,9 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface.Auth;
 
+using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
@@ -108,7 +107,10 @@ namespace TimeTrialResults
             }
 
             // save user record back to the database
-            collection.Save(u);
+
+            // probably a poor way of doing an update. waiting for inspiration...
+            var filter = Builders<DB.user>.Filter.Eq(nameof(u.id), u.id);
+            collection.ReplaceOne(filter, u);
 
             rtn = true;
 

@@ -13,13 +13,10 @@ using ServiceStack.Common.Web;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
 {
-
 
     public class UserDataCRUD
     {
@@ -45,7 +42,7 @@ namespace TimeTrialResults
         {
             UserData rtn = null;
 
-			if(id != null)
+			if (id != null)
 			{
                 var oId = new ObjectId(id);
 
@@ -59,27 +56,24 @@ namespace TimeTrialResults
         public void cr(UserData item)
         {
             var collection = DB.GetDatabase().GetCollection<UserData>(TableName);
-            collection.Insert(item);
+            collection.InsertOne(item);
         }
 
         public void u(string id, UserData item)
         {
-            var collection = DB.GetDatabase().GetCollection<UserData>(TableName);
-            collection.Save(item);
+		    var filter = Builders<UserData>.Filter.Eq(nameof(UserData.Id), id);
+            var collection = DB.GetDatabase().GetCollection<UserData>(TableName).ReplaceOne(filter, item);
         }
         public void d(string id)
         {
-
-            var oId = new ObjectId(id);
-            var q = Query<UserData>.EQ(o => o.Id, oId);
-
-            var collection = DB.GetDatabase().GetCollection<UserData>(TableName);
-            collection.Remove(q);
+			var filter = Builders<UserData>.Filter.Eq(nameof(UserData.Id), id);
+            DB.GetDatabase().GetCollection<UserData>(TableName).DeleteOne(filter);
         }
 
         public void dAll()
         {
-            DB.GetDatabase().GetCollection<UserData>(TableName).RemoveAll();
+			var filter = new BsonDocument();
+            DB.GetDatabase().GetCollection<UserData>(TableName).DeleteMany(filter);
         }
 
     }

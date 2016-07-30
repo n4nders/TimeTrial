@@ -5,8 +5,6 @@ using System.Web;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
@@ -14,9 +12,9 @@ namespace TimeTrialResults
     public class DB
     {
 
-        public static MongoDatabase GetDatabase()
+        public static IMongoDatabase GetDatabase()
         {
-            MongoDatabase rtn = null;
+            IMongoDatabase rtn = null;
 
             var appSettings = new ServiceStack.Configuration.AppSettings();
 
@@ -26,6 +24,9 @@ namespace TimeTrialResults
             string DbServerHost = appSettings.Get<string>("DbServerHost", "");
             int DbServerPort = appSettings.Get<int>("DbServerPort", 0);
 
+
+            /*
+             FOR SOME REASON THIS DOESNT WORK WITH MLAB \ MONGO 3 - GO OLD SKOOL CONNECTION STRING INSTEAD - SEE BELOW
             var credential = MongoCredential.CreateMongoCRCredential(DbName, DbUserName, DbUserPassword);
 
             MongoClientSettings settings;
@@ -39,6 +40,11 @@ namespace TimeTrialResults
 
             var server = mongoClient.GetServer();
             rtn = server.GetDatabase(DbName);
+            )*/
+
+            var connectionString = $"mongodb://{ DbUserName }:{ DbUserPassword }@{ DbServerHost }:{ DbServerPort }/{ DbName }";
+            var client = new MongoClient(connectionString);
+            rtn = client.GetDatabase(DbName);
 
             return rtn;
         }

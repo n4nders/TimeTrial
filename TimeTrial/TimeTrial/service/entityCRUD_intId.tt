@@ -9,6 +9,7 @@
 
 string[] typeNames =  {
 	
+
 };
 
 #>
@@ -26,8 +27,6 @@ using ServiceStack.Common.Web;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
@@ -71,7 +70,7 @@ foreach(string t in typeNames){
         public void cr(<#= t #> item)
         {
             var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
-            collection.Insert(item);
+            collection.InsertOne(item);
         }
 
         public void u(string id, <#= t #> item)

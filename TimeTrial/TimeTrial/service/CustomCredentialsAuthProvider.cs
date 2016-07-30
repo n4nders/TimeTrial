@@ -1,5 +1,4 @@
-﻿#define ENCODE_PASSWORDS
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +13,6 @@ using ServiceStack.ServiceInterface.Auth;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
@@ -34,17 +31,13 @@ namespace TimeTrialResults
             bool rtn = false;
 
             var db = DB.GetDatabase();
-            var u = db.GetCollection(DB.TableNames.user).AsQueryable<DB.user>().Where(o => o.UserName == userName).FirstOrDefault();
+            var u = db.GetCollection<DB.user>(DB.TableNames.user).AsQueryable().Where(o => o.UserName == userName).FirstOrDefault();
 
             {
-#if ENCODE_PASSWORDS
                 var pwdBytes = System.Text.ASCIIEncoding.UTF8.GetBytes(password);
                 var pwdEncoded = ProgressEncode.Progress.Encode(pwdBytes); // use the progress encoding scheme. why not says I.
-#else
-                var pwdEncoded = password;
-#endif
 
-                rtn = (u != null && u.pwd == pwdEncoded);
+                rtn = u?.pwd == pwdEncoded;
             }
             
             return rtn;
@@ -64,7 +57,7 @@ namespace TimeTrialResults
         {
             
             var db = DB.GetDatabase();
-            var u = db.GetCollection(DB.TableNames.user).AsQueryable<DB.user>().Where(o => o.UserName == session.UserAuthName).FirstOrDefault();
+            var u = db.GetCollection<DB.user>(DB.TableNames.user).AsQueryable().Where(o => o.UserName == session.UserAuthName).FirstOrDefault();
 
             if (u != null)
             {

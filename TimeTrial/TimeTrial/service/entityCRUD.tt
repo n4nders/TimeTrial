@@ -26,13 +26,10 @@ using ServiceStack.Common.Web;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace TimeTrialResults
 {
-
 <#
 
 foreach(string t in typeNames){
@@ -62,7 +59,7 @@ foreach(string t in typeNames){
         {
             <#= t #> rtn = null;
 
-			if(id != null)
+			if (id != null)
 			{
                 var oId = new ObjectId(id);
 
@@ -76,27 +73,24 @@ foreach(string t in typeNames){
         public void cr(<#= t #> item)
         {
             var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
-            collection.Insert(item);
+            collection.InsertOne(item);
         }
 
         public void u(string id, <#= t #> item)
         {
-            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
-            collection.Save(item);
+		    var filter = Builders<<#= t #>>.Filter.Eq(nameof(<#= t #>.Id), id);
+            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName).ReplaceOne(filter, item);
         }
         public void d(string id)
         {
-
-            var oId = new ObjectId(id);
-            var q = Query<<#= t #>>.EQ(o => o.Id, oId);
-
-            var collection = DB.GetDatabase().GetCollection<<#= t #>>(TableName);
-            collection.Remove(q);
+			var filter = Builders<<#= t #>>.Filter.Eq(nameof(<#= t #>.Id), id);
+            DB.GetDatabase().GetCollection<<#= t #>>(TableName).DeleteOne(filter);
         }
 
         public void dAll()
         {
-            DB.GetDatabase().GetCollection<<#= t #>>(TableName).RemoveAll();
+			var filter = new BsonDocument();
+            DB.GetDatabase().GetCollection<<#= t #>>(TableName).DeleteMany(filter);
         }
 
     }
