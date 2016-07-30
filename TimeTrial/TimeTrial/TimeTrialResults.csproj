@@ -134,7 +134,9 @@
     <Content Include="js\lib\ui-grid.info-gh-pages\release\ui-gridundefined.min.css" />
     <Content Include="js\lib\ui-grid.info-gh-pages\release\ui-gridundefined.min.js" />
     <Content Include="js\lib\ui-bootstrap-tpls-0.11.2.min.js" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="js\lib\ui-grid.info-gh-pages\release\3.2.5\less\animation.less" />
     <Content Include="js\lib\ui-grid.info-gh-pages\release\3.2.5\less\body.less" />
     <Content Include="js\lib\ui-grid.info-gh-pages\release\3.2.5\less\bootstrap\bootstrap.less" />
